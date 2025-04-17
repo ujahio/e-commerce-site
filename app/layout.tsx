@@ -6,7 +6,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
 	title: "Pro Clothing Stores",
-	description: "Generated using Next.js",
+	description: "Modern ecommerce store generated using Next.js",
 };
 
 export default function RootLayout({
