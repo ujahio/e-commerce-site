@@ -1,11 +1,13 @@
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import Image from "next/image";
 import Link from "next/link";
+
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import ProductPrice from "./product-price";
 
 const ProductCard = ({ product }: { product: any }) => {
 	const renderProductStockInfo = (price: number, stock: number) => {
 		if (stock > 0) {
-			return <p className="font-bold">{price}</p>;
+			return <ProductPrice value={Number(price)} />;
 		} else {
 			return <p className="text-destructive">Out of Stock</p>;
 		}
