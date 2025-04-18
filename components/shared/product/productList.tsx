@@ -10,8 +10,8 @@ const ProductList = ({
 	limit?: number;
 }) => {
 	const renderProducts = () => {
-		const limitedData = limit ? data.slice(0, 4) : data;
 		if (data.length > 0) {
+			const limitedData = limit ? data.slice(0, 4) : data;
 			return (
 				<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
 					{limitedData.map((product: any) => {
