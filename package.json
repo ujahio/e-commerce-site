@@ -11,6 +11,7 @@
 		"seed:db": "bun ./db/seed.ts"
 	},
 	"dependencies": {
+		"@auth/prisma-adapter": "^2.9.0",
 		"@neondatabase/serverless": "^1.0.0",
 		"@prisma/adapter-neon": "^6.6.0",
 		"@prisma/client": "^6.6.0",
@@ -23,6 +24,7 @@
 		"clsx": "^2.1.1",
 		"lucide-react": "^0.492.0",
 		"next": "15.3.0",
+		"next-auth": "^5.0.0-beta.26",
 		"prisma": "^6.6.0",
 		"react": "^19.0.0",
 		"react-dom": "^19.0.0",
