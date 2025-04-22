@@ -1,5 +1,9 @@
 ## Setup
 
+#### Deployed Site
+
+https://e-commerce-site-coral-delta.vercel.app/
+
 ### Setting up Database
 
 1. Register on [Vercel](https://vercel.com).
