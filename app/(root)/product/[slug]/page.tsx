@@ -1,4 +1,5 @@
 import NotFound from "@/app/not-found";
+import ProductImages from "@/components/shared/product/product-image";
 import ProductPrice from "@/components/shared/product/product-price";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -19,8 +20,9 @@ const ProductDetails = async (props: {
 		<>
 			<section>
 				<div className="grid grid-cols-1 md:grid-cols-5">
-					<div className="col-span-2">{/* Images Component*/}</div>
-					{/* Details Component*/}
+					<div className="col-span-2">
+						<ProductImages images={product.images} />
+					</div>
 
 					<div className="col-span-2 p-5">
 						<div className="flex flex-col gap-6">
