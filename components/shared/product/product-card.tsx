@@ -3,9 +3,10 @@ import Link from "next/link";
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import ProductPrice from "./product-price";
+import { Product } from "@/types";
 
-const ProductCard = ({ product }: { product: any }) => {
-	const renderProductStockInfo = (price: number, stock: number) => {
+const ProductCard = ({ product }: { product: Product }) => {
+	const renderProductStockInfo = (price: string, stock: number) => {
 		if (stock > 0) {
 			return <ProductPrice value={Number(price)} />;
 		} else {

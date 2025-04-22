@@ -20,4 +20,5 @@ export const insertProductSchema = z.object({
 	isFeatured: z.boolean(),
 	banner: z.string().nullable(),
 	price: currency,
+	brand: z.string().min(3, { message: "Brand must be at least 3 characters" }),
 });
