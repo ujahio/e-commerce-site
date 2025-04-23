@@ -22,7 +22,7 @@ const SignupForm = () => {
 		const { pending } = useFormStatus();
 		return (
 			<Button variant="default" className="w-full" disabled={pending}>
-				{pending ? "Submitting..." : "Sign In"}
+				{pending ? "Submitting..." : "Sign Up"}
 			</Button>
 		);
 	};
