@@ -12,13 +12,7 @@ const LoadingPage = () => {
 				width: "100vw",
 			}}
 		>
-			<Image
-				src={loader}
-				alt="Loading..."
-				className="animate-spin"
-				width={150}
-				height={150}
-			/>
+			<Image src={loader} alt="Loading..." className="animate-spin" />
 			<p className="text-lg text-gray-500 mt-4">Loading...</p>
 		</div>
 	);
