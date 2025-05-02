@@ -6,8 +6,8 @@ import { compareSync } from "bcrypt-ts-edge";
 
 export const config: NextAuthConfig = {
 	pages: {
-		signIn: "/signin",
-		error: "/signin",
+		signIn: "/sign-in",
+		error: "/sign-in",
 	},
 	session: {
 		strategy: "jwt",
