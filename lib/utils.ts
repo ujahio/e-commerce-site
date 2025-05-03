@@ -33,3 +33,13 @@ export function formatError(error: any) {
 			: JSON.stringify(error.message);
 	}
 }
+
+export function roundToTwoDecimalPlaces(value: number | string) {
+	if (typeof value !== "number" && typeof value !== "string") {
+		throw new Error("Value must be a number or string");
+	}
+	if (typeof value === "string") {
+		return Math.round((Number(value) + Number.EPSILON) * 100) / 100;
+	}
+	return Math.round((value + Number.EPSILON) * 100) / 100;
+}
