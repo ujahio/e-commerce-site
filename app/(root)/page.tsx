@@ -12,7 +12,7 @@ export default async function Home() {
 		<>
 			<ProductList
 				data={latestProducts}
-				title="Newest Arrrivals"
+				title="Newest Arrivals"
 				limit={LATEST_PRODUCTS_LIMIT}
 			/>
 		</>
