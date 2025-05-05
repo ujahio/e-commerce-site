@@ -14,6 +14,7 @@ export const config: NextAuthConfig = {
 		maxAge: 30 * 24 * 60 * 60, // 30 days
 	},
 	adapter: PrismaAdapter(prisma),
+	trustHost: true,
 	providers: [
 		CredentialsProvider({
 			name: "Credentials",
