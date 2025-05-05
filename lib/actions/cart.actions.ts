@@ -68,7 +68,6 @@ export const addItemToCart = async (data: CartItem) => {
 
 		const session = await auth();
 		const userId = session?.user?.id ? (session.user.id as string) : undefined;
-
 		const cart = await getMyCart();
 
 		const item = cartItemSchema.parse(data);
@@ -92,7 +91,10 @@ export const addItemToCart = async (data: CartItem) => {
 			});
 
 			await prisma.cart.create({
-				data: newCart,
+				data: {
+					...newCart,
+					userId: newCart.userId ?? undefined,
+				},
 			});
 
 			revalidatePath(`/product/${product.slug}`);
