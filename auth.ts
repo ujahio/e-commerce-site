@@ -3,6 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@/db/prisma";
 import { compareSync } from "bcrypt-ts-edge";
+import { cookies } from "next/headers";
 
 export const config: NextAuthConfig = {
 	pages: {
@@ -66,9 +67,10 @@ export const config: NextAuthConfig = {
 			return session;
 		},
 
-		async jwt({ token, user }: any) {
+		async jwt({ token, user, trigger }: any) {
 			if (user) {
 				token.role = user.role;
+				token.id = user.id;
 
 				if (user.name === "NO_NAME") {
 					token.name = user.email!.split("@")[0];
@@ -82,6 +84,37 @@ export const config: NextAuthConfig = {
 						name: token.name,
 					},
 				});
+
+				if (trigger === "signIn" || trigger === "signup") {
+					const cookiesObj = await cookies();
+					const sessionCartId = cookiesObj.get("sessionCartId")?.value;
+
+					if (sessionCartId) {
+						const sessionCart = await prisma.cart.findFirst({
+							where: {
+								sessionCartId,
+							},
+						});
+						if (sessionCart) {
+							// Delete current user cart
+							await prisma.cart.deleteMany({
+								where: {
+									userId: user.id,
+								},
+							});
+
+							// create a new cart for the user using the current session cart
+							await prisma.cart.update({
+								where: {
+									id: sessionCart.id,
+								},
+								data: {
+									userId: user.id,
+								},
+							});
+						}
+					}
+				}
 			}
 
 			return token;
