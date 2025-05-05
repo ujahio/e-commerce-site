@@ -4,6 +4,7 @@ import { useTransition } from "react";
 import { ArrowRight, Loader, MinusIcon, PlusIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import Image from "next/image";
 import {
 	Table,
 	TableBody,
@@ -12,7 +13,6 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { removeItemFromCart, addItemToCart } from "@/lib/actions/cart.actions";
 import { formatCurrency } from "@/lib/utils";
