@@ -1,7 +1,9 @@
 "use server";
 
+import { z } from "zod";
 import { auth, signIn, signOut } from "@/auth";
 import {
+	paymentMethodSchema,
 	shippingAddressSchema,
 	signInFormSchema,
 	signUpFormSchema,
@@ -120,6 +122,38 @@ export async function updateUserAddress(data: ShippingAddress) {
 		return {
 			success: true,
 			message: "User Address updated successfully",
+		};
+	} catch (err) {
+		return {
+			success: false,
+			message: formatError(err),
+		};
+	}
+}
+
+export async function updateUserPaymentMethod(
+	data: z.infer<typeof paymentMethodSchema>
+) {
+	try {
+		const session = await auth();
+		const currentUser = await prisma.user.findFirst({
+			where: {
+				id: session?.user?.id,
+			},
+		});
+
+		if (!currentUser) throw new Error("User not found");
+
+		const paymentMethod = paymentMethodSchema.parse(data);
+
+		await prisma.user.update({
+			where: { id: currentUser.id },
+			data: { paymentMethod: paymentMethod.type },
+		});
+
+		return {
+			success: true,
+			message: "User Payment Method updated successfully",
 		};
 	} catch (err) {
 		return {
