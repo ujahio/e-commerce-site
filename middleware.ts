@@ -17,6 +17,41 @@ export async function middleware(request: NextRequest) {
 		return response;
 	}
 
+	const { pathname } = request.nextUrl;
+	const protectedRoutes = [
+		/\/shipping-address/,
+		/\/payment-method/,
+		/\/place-order/,
+		/\/profile/,
+		/\/admin/,
+		/\/order\/(.*)/,
+		/\/user\/(.*)/,
+	];
+
+	// Check if the current path matches any protected route
+	const isProtectedRoute = protectedRoutes.some((pattern) =>
+		pattern.test(pathname)
+	);
+
+	// If this is a protected route, verify authentication
+	if (isProtectedRoute) {
+		// Check for NextAuth.js session token in cookies
+		const sessionToken = request.cookies.get("authjs.session-token")?.value;
+
+		// For secure environments, check for the secure cookie
+		const secureSessionToken = request.cookies.get(
+			"__Secure-authjs.session-token"
+		)?.value;
+
+		// If no session token exists, redirect to login
+		if (!sessionToken && !secureSessionToken) {
+			const url = new URL("/sign-in", request.url);
+			// Add the original path as a redirect parameter
+			url.searchParams.set("callbackUrl", pathname);
+			return NextResponse.redirect(url);
+		}
+	}
+
 	return NextResponse.next();
 }
 
