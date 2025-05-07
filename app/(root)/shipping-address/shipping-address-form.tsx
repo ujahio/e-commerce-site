@@ -36,11 +36,12 @@ const ShippingAddressForm = ({ address }: { address: ShippingAddress }) => {
 	) => {
 		startTransition(async () => {
 			const res = await updateUserAddress(values);
-			console.log(res);
 			if (!res.success) {
 				toast.error(res.message);
 				return;
-			} else router.push("/payment-method");
+			}
+
+			router.push("/payment-method");
 		});
 	};
 

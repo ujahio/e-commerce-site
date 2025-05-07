@@ -118,7 +118,7 @@ export async function updateUserAddress(data: ShippingAddress) {
 		});
 
 		return {
-			sucess: true,
+			success: true,
 			message: "User Address updated successfully",
 		};
 	} catch (err) {
