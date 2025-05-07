@@ -3,7 +3,7 @@
 import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { paymentMethodSchema } from "@/lib/validators";
-import { ControllerRenderProps, SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { DEFAULT_PAYMENT_METHOD, PAYMENT_METHODS } from "@/lib/constants";
 import { useTransition } from "react";
@@ -16,12 +16,10 @@ import {
 	FormLabel,
 	FormMessage,
 } from "@/components/ui/form";
-import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Loader, Radio } from "lucide-react";
-import { Input } from "@/components/ui/input";
+import { ArrowRight, Loader } from "lucide-react";
 import { updateUserPaymentMethod } from "@/lib/actions/user.action";
 
 const PreferredPaymentMethodForm = ({
