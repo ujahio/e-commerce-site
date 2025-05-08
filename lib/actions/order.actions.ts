@@ -264,7 +264,7 @@ const updateOrderToPaid = async ({
 			throw new Error("Order not found");
 		}
 	} catch (err) {
-		throw new Error("Error updating order to paid");
+		throw err;
 	}
 };
 
