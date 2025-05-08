@@ -9,6 +9,7 @@ import { prisma } from "@/db/prisma";
 import { CartItem, PaymentResult } from "@/types";
 import { paypal } from "../paypal";
 import { revalidatePath } from "next/cache";
+import { PAGE_SIZE } from "../constants";
 
 export const createOrder = async () => {
 	try {
@@ -265,4 +266,38 @@ const updateOrderToPaid = async ({
 	} catch (err) {
 		throw new Error("Error updating order to paid");
 	}
+};
+
+export const getMyOrders = async ({
+	limit = PAGE_SIZE,
+	page,
+}: {
+	limit?: number;
+	page: number;
+}) => {
+	const session = await auth();
+	if (!session) throw new Error("User is not authenticated");
+	const userId = session?.user?.id;
+	if (!userId) throw new Error("User not found");
+	const orders = await prisma.order.findMany({
+		where: {
+			userId: session.user?.id,
+		},
+		orderBy: {
+			createdAt: "desc",
+		},
+		take: limit,
+		skip: (page - 1) * limit,
+	});
+
+	const dataCount = await prisma.order.count({
+		where: {
+			userId: session.user?.id,
+		},
+	});
+
+	return {
+		data: orders,
+		totalPages: Math.ceil(dataCount / limit),
+	};
 };
