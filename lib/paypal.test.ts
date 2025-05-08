@@ -4,7 +4,6 @@ import { generarteAccessToken, paypal } from "./paypal";
 describe("Paypal", () => {
 	test("should generate access token", async () => {
 		const token = await generarteAccessToken();
-		console.log("token", token);
 		expect(token).toBeDefined();
 		expect(typeof token).toBe("string");
 		expect(token.length).toBeGreaterThan(0);
