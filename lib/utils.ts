@@ -59,6 +59,12 @@ export function formatCurrency(amount: number | string | null) {
 	} else return "NaN";
 }
 
+// Number formatter for displaying numbers without currency
+const NUMBER_FORMATTER = new Intl.NumberFormat("en-US");
+export function formatNumber(amount: number) {
+	return NUMBER_FORMATTER.format(amount);
+}
+
 export function formatId(id: string) {
 	return `..${id.substring(id.length - 6)}`;
 }
