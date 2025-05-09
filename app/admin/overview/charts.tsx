@@ -1,6 +1,5 @@
 "use client";
 
-import { X } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer } from "recharts";
 
 const Charts = ({
