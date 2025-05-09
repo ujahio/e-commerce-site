@@ -47,11 +47,6 @@ const OrderDetailsTable = ({
 		id,
 	} = order;
 
-	console.log({
-		isPaid,
-		paymentMethod,
-	});
-
 	const PrintLoadingState = () => {
 		const [{ isPending, isRejected }] = usePayPalScriptReducer();
 		let status = "";
