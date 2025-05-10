@@ -8,22 +8,22 @@ export const currency = z.string().refine((val) => {
 
 // Schema for inserting products
 export const insertProductSchema = z.object({
-	name: z.string().min(3, { message: "Name must be at least 3 characters" }),
-	slug: z.string().min(3, { message: "Slug must be at least 3 characters" }),
-	category: z
-		.string()
-		.min(3, { message: "Category must be at least 3 characters" }),
-	description: z
-		.string()
-		.min(3, { message: "Description must be at least 3 characters" }),
+	name: z.string().min(3, "Name must be at least 3 characters"),
+	slug: z.string().min(3, "Slug must be at least 3 characters"),
+	category: z.string().min(3, "Category must be at least 3 characters"),
+	brand: z.string().min(3, "Brand must be at least 3 characters"),
+	description: z.string().min(3, "Description must be at least 3 characters"),
 	stock: z.coerce.number(),
-	images: z.array(z.string()).min(1, "Product must have at least one image"),
-	isFeatured: z.boolean(),
-	banner: z.string().nullable(),
+	// images: z.array(z.string()).min(1, "Product must have at least one image"),
+	// isFeatured: z.boolean(),
+	// banner: z.string().nullable(),
 	price: currency,
-	brand: z.string().min(3, { message: "Brand must be at least 3 characters" }),
 });
 
+// Schema for updating products
+export const updateProductSchema = insertProductSchema.extend({
+	id: z.string().min(1, "Id is required"),
+});
 export const signInFormSchema = z.object({
 	email: z.string().email("Invalid email address"),
 	password: z.string().min(6, "Password must be at least 6 characters"),
