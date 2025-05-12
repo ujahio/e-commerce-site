@@ -15,7 +15,11 @@ import Pagination from "@/components/shared/pagination";
 import DeleteDialog from "@/components/shared/delete-dialog";
 
 const AdminProductsPage = async (props: {
-	searchParams: { [key: string]: string };
+	searchParams: Promise<{
+		page: string;
+		query: string;
+		category: string;
+	}>;
 }) => {
 	await requireAdmin();
 
@@ -30,11 +34,23 @@ const AdminProductsPage = async (props: {
 		category,
 	});
 
-	console.log(products);
 	return (
 		<div className="space-y-2">
 			<div className="flex justify-between">
-				<h1 className="h2-bold">Products</h1>
+				<div className="flex items-center gap-3">
+					<h1 className="h2-bold">Products</h1>
+					{searchText && (
+						<div>
+							Filtered by <i>&quot;{searchText}&quot;</i>{" "}
+							<Link href="/admin/products">
+								<Button variant="outline" size="sm">
+									Remove Filter
+								</Button>
+							</Link>
+						</div>
+					)}
+				</div>
+
 				<Button asChild variant="default">
 					<Link href={`/admin/products/create`}>Create Product</Link>
 				</Button>
