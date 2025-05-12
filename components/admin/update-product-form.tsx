@@ -7,8 +7,7 @@ import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ControllerRenderProps, SubmitHandler, useForm } from "react-hook-form";
-import { productDefaultValues } from "@/lib/constants";
-import { insertProductSchema, updateProductSchema } from "@/lib/validators";
+import { updateProductSchema } from "@/lib/validators";
 import { Product } from "@/types";
 import {
 	Form,
@@ -21,61 +20,34 @@ import {
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
-import { createProduct, updateProduct } from "@/lib/actions/product.actions";
+import { updateProduct } from "@/lib/actions/product.actions";
 import { UploadButton } from "@/lib/uploadthing";
 import { Card, CardContent } from "../ui/card";
 import { Checkbox } from "../ui/checkbox";
 
-const ProductForm = ({
-	type,
-	product,
-	productId,
-}: {
-	type: "Create" | "Update";
-	product?: Product;
-	productId?: string;
-}) => {
+const UpdateProductForm = ({ product }: { product: Product }) => {
 	const router = useRouter();
 
-	const form = useForm<z.infer<typeof insertProductSchema>>({
-		resolver:
-			type === "Update"
-				? zodResolver(updateProductSchema)
-				: zodResolver(insertProductSchema),
-		defaultValues:
-			product && type === "Update" ? product : productDefaultValues,
+	const form = useForm<z.infer<typeof updateProductSchema>>({
+		resolver: zodResolver(updateProductSchema),
+		defaultValues: product,
 	});
 
-	const onSubmit: SubmitHandler<z.infer<typeof insertProductSchema>> = async (
+	const onSubmit: SubmitHandler<z.infer<typeof updateProductSchema>> = async (
 		values
 	) => {
-		// On Create
-		if (type === "Create") {
-			const res = await createProduct(values);
-
-			if (!res.success) {
-				toast.error(res.message);
-			} else {
-				toast.success(res.message);
-				router.push("/admin/products");
-			}
+		if (!product.id) {
+			router.push("/admin/products");
+			return;
 		}
 
-		// On Update
-		if (type === "Update") {
-			if (!productId) {
-				router.push("/admin/products");
-				return;
-			}
+		const res = await updateProduct({ ...values, id: product.id });
 
-			const res = await updateProduct({ ...values, id: productId });
-
-			if (!res.success) {
-				toast.error(res.message);
-			} else {
-				toast.success(res.message);
-				router.push("/admin/products");
-			}
+		if (!res.success) {
+			toast.error(res.message);
+		} else {
+			toast.success(res.message);
+			router.push("/admin/products");
 		}
 	};
 
@@ -99,7 +71,7 @@ const ProductForm = ({
 							field,
 						}: {
 							field: ControllerRenderProps<
-								z.infer<typeof insertProductSchema>,
+								z.infer<typeof updateProductSchema>,
 								"name"
 							>;
 						}) => (
@@ -120,7 +92,7 @@ const ProductForm = ({
 							field,
 						}: {
 							field: ControllerRenderProps<
-								z.infer<typeof insertProductSchema>,
+								z.infer<typeof updateProductSchema>,
 								"slug"
 							>;
 						}) => (
@@ -157,7 +129,7 @@ const ProductForm = ({
 							field,
 						}: {
 							field: ControllerRenderProps<
-								z.infer<typeof insertProductSchema>,
+								z.infer<typeof updateProductSchema>,
 								"category"
 							>;
 						}) => (
@@ -178,7 +150,7 @@ const ProductForm = ({
 							field,
 						}: {
 							field: ControllerRenderProps<
-								z.infer<typeof insertProductSchema>,
+								z.infer<typeof updateProductSchema>,
 								"brand"
 							>;
 						}) => (
@@ -201,7 +173,7 @@ const ProductForm = ({
 							field,
 						}: {
 							field: ControllerRenderProps<
-								z.infer<typeof insertProductSchema>,
+								z.infer<typeof updateProductSchema>,
 								"price"
 							>;
 						}) => (
@@ -222,7 +194,7 @@ const ProductForm = ({
 							field,
 						}: {
 							field: ControllerRenderProps<
-								z.infer<typeof insertProductSchema>,
+								z.infer<typeof updateProductSchema>,
 								"stock"
 							>;
 						}) => (
@@ -329,7 +301,7 @@ const ProductForm = ({
 							field,
 						}: {
 							field: ControllerRenderProps<
-								z.infer<typeof insertProductSchema>,
+								z.infer<typeof updateProductSchema>,
 								"description"
 							>;
 						}) => (
@@ -354,7 +326,7 @@ const ProductForm = ({
 						disabled={form.formState.isSubmitting}
 						className="button col-span-2 w-full"
 					>
-						{form.formState.isSubmitting ? "Submitting" : `${type} Product`}
+						{form.formState.isSubmitting ? "Submitting" : "Update Product"}
 					</Button>
 				</div>
 			</form>
@@ -362,4 +334,4 @@ const ProductForm = ({
 	);
 };
 
-export default ProductForm;
+export default UpdateProductForm;
