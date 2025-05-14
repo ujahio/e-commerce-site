@@ -42,12 +42,18 @@ export const getAllProducts = async ({
 	query,
 	limit = PAGE_SIZE,
 	page,
-}: // category,
+	category,
+	price,
+	rating,
+}: // sort,
 {
 	query: string;
 	limit?: number;
 	page: number;
 	category?: string;
+	price?: string;
+	rating?: string;
+	sort?: string;
 }) => {
 	// Query filter
 	const queryFilter: Prisma.ProductWhereInput =
@@ -60,8 +66,35 @@ export const getAllProducts = async ({
 			  }
 			: {};
 
+	const categoryFilter: Prisma.ProductWhereInput =
+		category && category !== "all" ? { category } : {};
+
+	const priceFilter: Prisma.ProductWhereInput =
+		price && price !== "all"
+			? {
+					price: {
+						gte: Number(price.split("-")[0]),
+						lte: Number(price.split("-")[1]),
+					},
+			  }
+			: {};
+
+	const ratingFilter: Prisma.ProductWhereInput =
+		rating && rating !== "all"
+			? {
+					rating: {
+						gte: Number(rating),
+					},
+			  }
+			: {};
+
 	const data = await prisma.product.findMany({
-		where: { ...queryFilter },
+		where: {
+			...queryFilter,
+			...categoryFilter,
+			...priceFilter,
+			...ratingFilter,
+		},
 		orderBy: {
 			createdAt: "desc",
 		},
@@ -171,4 +204,13 @@ export const getFeaturedProducts = async () => {
 	});
 
 	return convertToPlainObject(data);
+};
+
+export const getAllCategories = async () => {
+	const data = await prisma.product.groupBy({
+		by: ["category"],
+		_count: true,
+	});
+
+	return data;
 };
