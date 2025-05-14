@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import ProductPrice from "./product-price";
 import { Product } from "@/types";
+import Rating from "./rating";
 
 const ProductCard = ({ product }: { product: Product }) => {
 	const renderProductStockInfo = (price: string, stock: number) => {
@@ -32,7 +33,7 @@ const ProductCard = ({ product }: { product: Product }) => {
 						<h2 className="text-sm font-medium">{product.name}</h2>
 					</Link>
 					<div className="flex-between gap-4">
-						<p className="">{product.rating} Stars</p>
+						<Rating value={Number(product.rating)} />
 						{renderProductStockInfo(product.price, product.stock)}
 					</div>
 				</CardContent>

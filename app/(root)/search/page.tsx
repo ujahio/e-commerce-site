@@ -109,8 +109,6 @@ const SearchPage = async (props: {
 		return `/search?${new URLSearchParams(params).toString()}`;
 	};
 
-	console.log({ q, page, category, price, rating, sort });
-
 	const products = await getAllProducts({
 		query: q,
 		page: Number(page),
