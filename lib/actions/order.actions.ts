@@ -477,12 +477,3 @@ export const deliverOrder = async (orderId: string) => {
 		};
 	}
 };
-
-export const getAllCategories = async () => {
-	const data = await prisma.product.groupBy({
-		by: ["category"],
-		_count: true,
-	});
-
-	return data;
-};
