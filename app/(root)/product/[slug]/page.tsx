@@ -6,6 +6,9 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { getProductBySlug } from "@/lib/actions/product.actions";
 import { getMyCart } from "@/lib/actions/cart.actions";
+import { auth } from "@/auth";
+import ReviewList from "./review-list";
+import Rating from "@/components/shared/product/rating";
 
 const ProductDetails = async (props: {
 	params: Promise<{
@@ -17,6 +20,8 @@ const ProductDetails = async (props: {
 	if (!product) {
 		return <NotFound />;
 	}
+	const session = await auth();
+	const userId = session?.user?.id;
 
 	const cart = await getMyCart();
 
@@ -34,9 +39,8 @@ const ProductDetails = async (props: {
 								{product.brand} {product.category}
 							</p>
 							<h1 className="h3-bold">{product.name}</h1>
-							<p className="">
-								{product.rating} of {product.numReviews} Reviews
-							</p>
+							<Rating value={Number(product.rating)} />
+							<p>{product.numReviews} reviews</p>
 							<div className="flex flex-col gap-3 sm:flex-row sm:items-center">
 								<ProductPrice
 									value={Number(product.price)}
@@ -86,6 +90,14 @@ const ProductDetails = async (props: {
 						</Card>
 					</div>
 				</div>
+			</section>
+			<section className="mt-10">
+				<h2 className="h2-bold mb-2">Customer Review</h2>
+				<ReviewList
+					userId={userId || ""}
+					productId={product.id}
+					productSlug={product.slug}
+				/>
 			</section>
 		</>
 	);
