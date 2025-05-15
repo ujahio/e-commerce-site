@@ -18,6 +18,7 @@ import { ShippingAddress } from "@/types";
 import { PAGE_SIZE } from "../constants";
 import { revalidatePath } from "next/cache";
 import { Prisma } from "../generated/prisma";
+import { getMyCart } from "./cart.actions";
 
 export async function signInWithCredentials(
 	prevState: unknown,
@@ -46,6 +47,9 @@ export async function signInWithCredentials(
 }
 
 export async function signOutUser() {
+	// get current users cart and delete it so it does not persist to next user
+	const currentCart = await getMyCart();
+	await prisma.cart.delete({ where: { id: currentCart?.id } });
 	await signOut();
 }
 
@@ -222,7 +226,7 @@ export async function getAllUsers({
 						contains: query,
 						mode: "insensitive",
 					} as Prisma.StringFilter,
-			  }
+				}
 			: {};
 	try {
 		const data = await prisma.user.findMany({
