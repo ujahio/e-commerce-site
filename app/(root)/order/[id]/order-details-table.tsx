@@ -28,15 +28,18 @@ import {
 	updateOrderToPaidCOD,
 } from "@/lib/actions/order.actions";
 import { Button } from "@/components/ui/button";
+import StripePayment from "./stripe-payment";
 
 const OrderDetailsTable = ({
 	order,
 	paypalClientId,
+	stripeClientSecret,
 	isAdmin,
 }: {
 	order: Order;
 	paypalClientId: string;
 	isAdmin: boolean;
+	stripeClientSecret: string | null;
 }) => {
 	const {
 		shippingAddress,
@@ -242,6 +245,15 @@ const OrderDetailsTable = ({
 										/>
 									</PayPalScriptProvider>
 								</>
+							)}
+
+							{/* Stripe Payment*/}
+							{!isPaid && paymentMethod === "Stripe" && stripeClientSecret && (
+								<StripePayment
+									priceInCents={Number(order.totalPrice) * 100}
+									orderId={order.id}
+									clientSecret={stripeClientSecret}
+								/>
 							)}
 
 							{/* COD Payment*/}
