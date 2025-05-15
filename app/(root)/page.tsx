@@ -1,3 +1,4 @@
+import IconBoxes from "@/components/icon-boxes";
 import ProductCarousel from "@/components/shared/product/product-carousel";
 import ProductList from "@/components/shared/product/productList";
 import ViewAllProductsButton from "@/components/view-all-products-button";
@@ -26,6 +27,7 @@ export default async function Home() {
 				limit={LATEST_PRODUCTS_LIMIT}
 			/>
 			<ViewAllProductsButton />
+			<IconBoxes />
 		</>
 	);
 }
