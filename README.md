@@ -14,71 +14,25 @@ This project uses Vercel and Neon for hosting and database management. Follow th
 4. Navigate to Storage and select Neon Serverless Postgres from Marketplace.
 5. Fill out the form to create a new Neon database.
 
-### Setup Prisma
+### [Setup Prisma](./PRISMA-SETUP.md)
 
-This project uses Prisma as an ORM to interact with the Neon database. Follow these steps to set up Prisma:
+### Setup Stripe
 
-1. Install Prisma and prisma client:
+1. Create a new account on [Stripe](https://stripe.com).
+2. Create a new project and get your API keys.
+3. Add the Stripe publishable key and secret key to your environment variables.
+4. Create webhooks in Stripe to handle events like payment success, failure, etc. You can do this in the Stripe dashboard under Developers > Webhooks using your Vercel URL.
 
-```bash
-bun install --save-dev prisma @prisma/client
-```
+### Setup PayPal
 
-2. Initialize Prisma in your project:
+1. Create a new account on [PayPal Developer](https://developer.paypal.com).
+2. Create a new app in the PayPal Developer dashboard and get your client ID and secret.
+3. Add the PayPal client ID and secret to your environment variables.
 
-```bash
-bun prisma init
-```
+### Setup Resend
 
-\*\*You should see a new folder called `prisma` in your project directory, containing a file named `schema.prisma`.
-
-3. Update the `DATABASE_URL` in the `.env` file with your Neon database connection string. You can find this in the Neon dashboard under your database settings.
-
-4. Create your models in the `schema.prisma` file. For example:
-
-```prisma
-model User {
-  id        String   @id @default(uuid())
-  name      String?
-  email     String?  @unique
-  password  String?
-  createdAt DateTime @default(now())
-}
-```
-
-5. Generate the Prisma Client:
-
-```bash
-bun prisma generate
-```
-
-6. Migrate your database schema:
-
-```bash
-bun prisma migrate dev --name init
-```
-
-Table should be created in your Neon database. You can check this by going to the Neon dashboard and selecting your database. You should see a list of tables.
-
-7. If you make changes to your Prisma schema, you can create a new migration with:
-
-```bash
-bun prisma migrate dev --name <migration_name>
-```
-
-Replace `<migration_name>` with a descriptive name for your migration. This will create a new migration file in the `prisma/migrations` folder and apply the changes to your database.
-
-8. Run the Prisma Studio to view your database:
-
-```bash
-bun prisma studio
-```
-
-9. Seed the database with initial data (optional):
-
-```bash
-bun run seed:db
-```
+1. Create a new account on [Resend](https://resend.com).
+2. Create a new project and get your API key.
 
 ### Add Environmental Variables
 
@@ -92,4 +46,26 @@ LATEST_PRODUCTS_LIMIT=
 DATABASE_URL=
 NEXTAUTH_URL=
 NEXTAUTH_SECRET=
+NEXTAUTH_URL_INTERNAL=
+
+PAYMENT_METHODS="PayPal, Stripe, CashOnDelivery"
+DEFAULT_PAYMENT_METHOD=
+
+// PAYPAL
+PAYPAL_CLIENT_ID=
+PAYPAL_APP_SECRET=
+PAYPAL_API_URL="https://api-m.sandbox.paypal.com"
+
+// UPLOADTHING
+UPLOADTHING_TOKEN=
+UPLOADTHING_SECRET=
+UPLOADTHING_APPID=
+
+// STRIPE
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
+STRIPE_SECRET_KEY=
+
+//RESEND
+RESEND_API_KEY=
+SENDER_EMAIL=
 ```
